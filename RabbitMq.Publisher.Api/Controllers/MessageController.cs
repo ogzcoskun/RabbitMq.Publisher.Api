@@ -21,21 +21,22 @@ namespace RabbitMq.Publisher.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ServiceResponse> PublishMessage(MessageModel message)
+        public async Task<IActionResult> PublishMessage(MessageModel message)
         {
             try
             {
                 var response = await _messageService.SendMessage(message);
 
-                return response;
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return new ServiceResponse()
+
+                return BadRequest(new ServiceResponse()
                 {
                     Success = false,
                     Message = ex.Message
-                };
+                });
             }
         }
     }
